@@ -1,52 +1,54 @@
 import Foundation
-final class ListNode<Value> {
+import PlaygroundSupport
+
+public final class ListNode<Value> {
     
-    var value: Value
+    public var value: Value
     /// If use struct for ListNode. Error:
     /// Value type 'ListNode<Value>' cannot have a stored property that recursively contains it
-    var parent: ListNode?
-    var children: [ListNode]
+    public var parent: ListNode?
+    public var children: [ListNode]
     
-    var count: Int {
+    public var count: Int {
         1 + children.reduce(0) { return $0 + $1.count }
     }
     
-    init(_ value: Value) {
+    public init(_ value: Value) {
         self.value = value
         children = []
     }
     
-    init(value: Value, children: [ListNode]) {
+    public init(value: Value, children: [ListNode]) {
         self.value = value
         self.children = children
     }
     
-    init(_ value: Value, @ListNodeBuilder builder: () -> [ListNode]) {
+    public init(_ value: Value, @ListNodeBuilder builder: () -> [ListNode]) {
         self.value = value
         children = builder()
         children.forEach({ $0.parent = ListNode(value) })
     }
     
-    func add(child: ListNode) {
+    public func add(child: ListNode) {
         children.append(child)
     }
 }
 
 @resultBuilder
-struct ListNodeBuilder {
-    static func buildBlock<Value>(_ children: ListNode<Value>...) -> [ListNode<Value>] {
+public struct ListNodeBuilder {
+    public static func buildBlock<Value>(_ children: ListNode<Value>...) -> [ListNode<Value>] {
         children
     }
 }
 
 extension ListNode: Equatable where Value: Equatable {
-    static func ==(lhs: ListNode, rhs: ListNode) -> Bool {
+    public static func ==(lhs: ListNode, rhs: ListNode) -> Bool {
         lhs.value == rhs.value && lhs.children == rhs.children
     }
 }
 
 extension ListNode where Value: Equatable {
-    func find(value: Value) -> ListNode? {
+    public func find(value: Value) -> ListNode? {
         if self.value == value {
             return self
         }
@@ -58,13 +60,13 @@ extension ListNode where Value: Equatable {
         return nil
     }
     
-    func findParent(of value: Value) -> ListNode? {
+    public func findParent(of value: Value) -> ListNode? {
         find(value: value)?.parent
     }
 }
 
 extension ListNode: Comparable where Value: Comparable {
-    static func < (lhs: ListNode, rhs: ListNode) -> Bool {
+    public static func < (lhs: ListNode, rhs: ListNode) -> Bool {
         lhs.count < rhs.count
     }
 }

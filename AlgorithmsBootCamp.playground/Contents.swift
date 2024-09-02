@@ -1,66 +1,7 @@
 import UIKit
 import Foundation
-/*
- Example 1:
 
- Input: candidates = [2,3,6,7], target = 7
- Output: [[2,2,3],[7]]
- Explanation:
- 2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
- 7 is a candidate, and 7 = 7.
- These are the only two combinations.
- Example 2:
 
- Input: candidates = [2,3,5], target = 8
- Output: [[2,2,2,2],[2,3,3],[3,5]]
- Example 3:
-
- Input: candidates = [2], target = 1
- Output: []
-  
-
- Constraints:
-
- 1 <= candidates.length <= 30
- 2 <= candidates[i] <= 40
- All elements of candidates are distinct.
- 1 <= target <= 40
- */
-
-//func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
-//  var result = [[Int]]()
-//  for candidate in candidates {
-//    let surplus = target%candidate
-//    if surplus == 0 {
-//      result.append(divisibleList(target: target, candidate: candidate))
-//    }
-//    if candidates.contains(surplus) {
-//      result.append(surplusList(candidate, target: target, surplus: surplus))
-//    }
-//  }
-//  print(result)
-//  return result
-//}
-//
-//func surplusList(_ candidate: Int, target: Int, surplus: Int) -> [Int] {
-//  var list = [surplus]
-//  let nums = target/candidate
-//  for _ in 0..<nums {
-//    list.append(candidate)
-//  }
-//  return list
-//}
-//
-//func divisibleList(target: Int, candidate: Int) -> [Int] {
-//  var list = [Int]()
-//  let nums = target/candidate
-//  for _ in 0..<nums {
-//    list.append(candidate)
-//  }
-//  return list
-//}
-//
-//combinationSum([2,3,6,7], 7)
 
 //func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
 //  var res = [[Int]]()
@@ -91,54 +32,6 @@ import Foundation
 //combinationSum([1,0,-1,0,-2,2], 0)
 
 
-func diagonalDifference(arr: [[Int]]) -> Int {
-    // Write your code here
-  let matrixCount = arr.count
-  var leftSide = 0
-  var rightSide = 0
-  for i in 0..<matrixCount {
-    leftSide += arr[i][i]
-    rightSide += arr[i][matrixCount-1-i]
-  }
-  return abs(leftSide-rightSide)
-}
-
-//print(diagonalDifference(arr: [[11, 2, 4], [4, 5, 6], [10, 8, -12]]))
-/*
- Example
-
- There are  elements, two positive, two negative and one zero. Their ratios are ,  and . Results are printed as:
- */
-//func plusMinus(arr: [Int]) -> Void {
-//    // Write your code here
-//  var negativeCounter: Decimal = 0
-//  var positiveCounter: Decimal = 0
-//  var zeroCounter: Decimal = 0
-//  for v in arr {
-//    if v == 0 {
-//      zeroCounter += 1
-//    }else if v < 0 {
-//      negativeCounter += 1
-//    } else {
-//      positiveCounter += 1
-//    }
-//  }
-//  let elements = Decimal(arr.count)
-//  func formattedString(_ number: Decimal) -> String {
-//    let formatter = NumberFormatter()
-//    formatter.minimumFractionDigits = 6
-//    formatter.maximumFractionDigits = 6
-//    return formatter.string(from: number as NSDecimalNumber)!
-//    
-//  }
-////  [
-////  print(formattedString(positiveCounter/elements))
-////  print(formattedString(negativeCounter/elements))
-////  print(formattedString(zeroCounter/elements))
-////  ].sorted{ $0 > $1 }.forEach{
-////    print($0)
-////  }
-//}
 
 //func staircase(n: Int) -> Void {
 //  for i in 0..<n {
@@ -154,25 +47,6 @@ func diagonalDifference(arr: [[Int]]) -> Int {
 //  }
 //}
 //staircase(n: 4)
-//func threeConsecutiveOdds(_ arr: [Int]) -> Bool {
-//    var counter = 0
-//    for v in arr {
-//        if v % 2 == 0 {
-//            counter = 0
-//        } else {
-//            counter += 1
-//        }
-//        if counter == 3 {
-//            return true
-//        }
-//    }
-//    return counter == 3
-//}
-//let list1 = [2,6,4,1]
-//threeConsecutiveOdds(list1)
-//
-//let l2 = [1,2,34,3,4,5,7,23,12]
-//threeConsecutiveOdds(l2)
 
 
 
@@ -282,5 +156,119 @@ func diagonalDifference(arr: [[Int]]) -> Int {
 //binarySearch(list: [], target: 1)
 //binarySearch(list: [1], target: 1)
 
+final class ListNode<Value> {
+    
+    var value: Value
+    /// If use struct for ListNode. Error:
+    /// Value type 'ListNode<Value>' cannot have a stored property that recursively contains it
+    var parent: ListNode?
+    var children: [ListNode]
+    
+    var count: Int {
+        1 + children.reduce(0) { return $0 + $1.count }
+    }
+    
+    init(_ value: Value) {
+        self.value = value
+        children = []
+    }
+    
+    init(value: Value, children: [ListNode]) {
+        self.value = value
+        self.children = children
+    }
+    
+    init(_ value: Value, @ListNodeBuilder builder: () -> [ListNode]) {
+        self.value = value
+        children = builder()
+        children.forEach({ $0.parent = ListNode(value) })
+    }
+    
+    func add(child: ListNode) {
+        children.append(child)
+    }
+}
 
-builerDummyTreesData()
+@resultBuilder
+struct ListNodeBuilder {
+    static func buildBlock<Value>(_ children: ListNode<Value>...) -> [ListNode<Value>] {
+        children
+    }
+}
+
+extension ListNode: Equatable where Value: Equatable {
+    static func ==(lhs: ListNode, rhs: ListNode) -> Bool {
+        lhs.value == rhs.value && lhs.children == rhs.children
+    }
+}
+
+extension ListNode where Value: Equatable {
+    func find(value: Value) -> ListNode? {
+        if self.value == value {
+            return self
+        }
+        for child in children {
+            if let match = child.find(value: value) {
+                return match
+            }
+        }
+        return nil
+    }
+    
+    func findParent(of value: Value) -> ListNode? {
+        find(value: value)?.parent
+    }
+}
+
+extension ListNode: Comparable where Value: Comparable {
+    static func < (lhs: ListNode, rhs: ListNode) -> Bool {
+        lhs.count < rhs.count
+    }
+}
+typealias Node = ListNode
+let numberTrees = Node(1) {
+    Node(2) {
+        Node(5)
+        Node(6)
+    }
+    Node(4)
+    Node(3) {
+        Node(12)
+    }
+}
+print(numberTrees.count)
+
+
+func bfs(tree: Node<Int>) -> [Int] {
+    var result = [Int]()
+    var queueTree = [tree]
+    while !queueTree.isEmpty {
+        // FIFO: Remove the first entry
+        let current = queueTree.remove(at: 0)
+        result.append(current.value)
+        for child in current.children {
+            queueTree.append(child)
+        }
+    }
+    return result
+}
+
+print("Resolved by BFS: \(bfs(tree: numberTrees))")
+
+func dfs(tree: Node<Int>) -> [Int] {
+    var stackResult = [Int]()
+    var stackTree = [tree]
+    
+    while !stackTree.isEmpty {
+        // Remove the last one added O(1)
+        //LIFO
+        let current = stackTree.removeLast()
+        stackResult.append(current.value)
+        for child in current.children {
+            stackTree.append(child)
+        }
+    }
+    return stackResult
+}
+
+print("Resolved by dfs: \(dfs(tree: numberTrees))")
