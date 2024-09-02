@@ -62,29 +62,29 @@ import Foundation
 //
 //combinationSum([2,3,6,7], 7)
 
-func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
-  var res = [[Int]]()
-  var cur = [Int]()
-  func dfs(i: Int, cur: inout [Int], total: Int) {
-    print("current i:\(i) - cur: \(cur) - res:\(res) - total:\(total)")
-    if total == target {
-      var curCopy = cur
-      res.append(curCopy)
-      return
-    }
-    if i >= candidates.count || total > target {
-      return
-    }
-    
-    cur.append(candidates[i])
-    dfs(i: i, cur: &cur, total: total + candidates[i])
-    cur.removeLast()
-    dfs(i: i + 1, cur: &cur, total: total)
-  }
-  dfs(i: 0, cur: &cur, total: 0)
-  print(res)
-  return res
-}
+//func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+//  var res = [[Int]]()
+//  var cur = [Int]()
+//  func dfs(i: Int, cur: inout [Int], total: Int) {
+//    print("current i:\(i) - cur: \(cur) - res:\(res) - total:\(total)")
+//    if total == target {
+//      var curCopy = cur
+//      res.append(curCopy)
+//      return
+//    }
+//    if i >= candidates.count || total > target {
+//      return
+//    }
+//    
+//    cur.append(candidates[i])
+//    dfs(i: i, cur: &cur, total: total + candidates[i])
+//    cur.removeLast()
+//    dfs(i: i + 1, cur: &cur, total: total)
+//  }
+//  dfs(i: 0, cur: &cur, total: 0)
+//  print(res)
+//  return res
+//}
 //combinationSum([2,3,6,4,7], 9)
 //combinationSum([2,3,5], 11)
 
@@ -109,36 +109,36 @@ func diagonalDifference(arr: [[Int]]) -> Int {
 
  There are  elements, two positive, two negative and one zero. Their ratios are ,  and . Results are printed as:
  */
-func plusMinus(arr: [Int]) -> Void {
-    // Write your code here
-  var negativeCounter: Decimal = 0
-  var positiveCounter: Decimal = 0
-  var zeroCounter: Decimal = 0
-  for v in arr {
-    if v == 0 {
-      zeroCounter += 1
-    }else if v < 0 {
-      negativeCounter += 1
-    } else {
-      positiveCounter += 1
-    }
-  }
-  let elements = Decimal(arr.count)
-  func formattedString(_ number: Decimal) -> String {
-    let formatter = NumberFormatter()
-    formatter.minimumFractionDigits = 6
-    formatter.maximumFractionDigits = 6
-    return formatter.string(from: number as NSDecimalNumber)!
-    
-  }
-//  [
-//  print(formattedString(positiveCounter/elements))
-//  print(formattedString(negativeCounter/elements))
-//  print(formattedString(zeroCounter/elements))
-//  ].sorted{ $0 > $1 }.forEach{
-//    print($0)
+//func plusMinus(arr: [Int]) -> Void {
+//    // Write your code here
+//  var negativeCounter: Decimal = 0
+//  var positiveCounter: Decimal = 0
+//  var zeroCounter: Decimal = 0
+//  for v in arr {
+//    if v == 0 {
+//      zeroCounter += 1
+//    }else if v < 0 {
+//      negativeCounter += 1
+//    } else {
+//      positiveCounter += 1
+//    }
 //  }
-}
+//  let elements = Decimal(arr.count)
+//  func formattedString(_ number: Decimal) -> String {
+//    let formatter = NumberFormatter()
+//    formatter.minimumFractionDigits = 6
+//    formatter.maximumFractionDigits = 6
+//    return formatter.string(from: number as NSDecimalNumber)!
+//    
+//  }
+////  [
+////  print(formattedString(positiveCounter/elements))
+////  print(formattedString(negativeCounter/elements))
+////  print(formattedString(zeroCounter/elements))
+////  ].sorted{ $0 > $1 }.forEach{
+////    print($0)
+////  }
+//}
 
 //func staircase(n: Int) -> Void {
 //  for i in 0..<n {
@@ -283,4 +283,4 @@ func plusMinus(arr: [Int]) -> Void {
 //binarySearch(list: [1], target: 1)
 
 
-
+builerDummyTreesData()
