@@ -4,12 +4,12 @@ import Foundation
 /*
  view image inside resources folder
  */
-func generateMatrix(_ n: Int) -> [[Int]] {
-    var c = [Int](repeating: 0, count: n)
+public func generateMatrix(_ n: Int) -> [[Int]] {
+    let c = [Int](repeating: 0, count: n)
     var mat = [[Int]](repeating: c, count: n)
     var left = 0, right = n - 1, top = 0, bottom = n - 1
     var val = 1
-    var grid = n * n
+    let grid = n * n
     while val <= grid {
         // Fill every val in top row
         if left <= right && val <= grid {
