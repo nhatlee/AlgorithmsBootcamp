@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 struct Variety {
     let classification: String
@@ -59,10 +58,10 @@ struct Cache {
         storage[key]
     }
 }
-var cache = Cache()
-cache.storage = ["anything": Date.now]
-
-print(cache.profile)
+//var cache = Cache()
+//cache.storage = ["anything": Date.now]
+//
+//print(cache.profile)
 
 
 @dynamicMemberLookup
@@ -74,16 +73,16 @@ struct Person {
     }
 }
 
-let taylor = Person()
-taylor.printAddress("555 Taylor Swift Avenue")
-
-
-
-let str = "Hello, Swift" as AnyObject
-let bounds = str.bounds
-let alignment = str.textAlignment
-
-str.addSubview?(UIButton())
+//let taylor = Person()
+//taylor.printAddress("555 Taylor Swift Avenue")
+//
+//
+//
+//let str = "Hello, Swift" as AnyObject
+//let bounds = str.bounds
+//let alignment = str.textAlignment
+//
+//str.addSubview?(UIButton())
 
 
 @dynamicMemberLookup

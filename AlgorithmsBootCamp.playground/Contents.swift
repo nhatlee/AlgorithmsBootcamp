@@ -156,119 +156,21 @@ import Foundation
 //binarySearch(list: [], target: 1)
 //binarySearch(list: [1], target: 1)
 
-final class ListNode<Value> {
-    
-    var value: Value
-    /// If use struct for ListNode. Error:
-    /// Value type 'ListNode<Value>' cannot have a stored property that recursively contains it
-    var parent: ListNode?
-    var children: [ListNode]
-    
-    var count: Int {
-        1 + children.reduce(0) { return $0 + $1.count }
-    }
-    
-    init(_ value: Value) {
-        self.value = value
-        children = []
-    }
-    
-    init(value: Value, children: [ListNode]) {
-        self.value = value
-        self.children = children
-    }
-    
-    init(_ value: Value, @ListNodeBuilder builder: () -> [ListNode]) {
-        self.value = value
-        children = builder()
-        children.forEach({ $0.parent = ListNode(value) })
-    }
-    
-    func add(child: ListNode) {
-        children.append(child)
-    }
-}
 
-@resultBuilder
-struct ListNodeBuilder {
-    static func buildBlock<Value>(_ children: ListNode<Value>...) -> [ListNode<Value>] {
-        children
+let numberTrees = ListNode(1) {
+    ListNode(2) {
+        ListNode(5)
+        ListNode(6)
     }
-}
-
-extension ListNode: Equatable where Value: Equatable {
-    static func ==(lhs: ListNode, rhs: ListNode) -> Bool {
-        lhs.value == rhs.value && lhs.children == rhs.children
-    }
-}
-
-extension ListNode where Value: Equatable {
-    func find(value: Value) -> ListNode? {
-        if self.value == value {
-            return self
-        }
-        for child in children {
-            if let match = child.find(value: value) {
-                return match
-            }
-        }
-        return nil
-    }
-    
-    func findParent(of value: Value) -> ListNode? {
-        find(value: value)?.parent
-    }
-}
-
-extension ListNode: Comparable where Value: Comparable {
-    static func < (lhs: ListNode, rhs: ListNode) -> Bool {
-        lhs.count < rhs.count
-    }
-}
-typealias Node = ListNode
-let numberTrees = Node(1) {
-    Node(2) {
-        Node(5)
-        Node(6)
-    }
-    Node(4)
-    Node(3) {
-        Node(12)
+    ListNode(4)
+    ListNode(3) {
+        ListNode(12)
     }
 }
 print(numberTrees.count)
 
-
-func bfs(tree: Node<Int>) -> [Int] {
-    var result = [Int]()
-    var queueTree = [tree]
-    while !queueTree.isEmpty {
-        // FIFO: Remove the first entry
-        let current = queueTree.remove(at: 0)
-        result.append(current.value)
-        for child in current.children {
-            queueTree.append(child)
-        }
-    }
-    return result
-}
-
 print("Resolved by BFS: \(bfs(tree: numberTrees))")
 
-func dfs(tree: Node<Int>) -> [Int] {
-    var stackResult = [Int]()
-    var stackTree = [tree]
-    
-    while !stackTree.isEmpty {
-        // Remove the last one added O(1)
-        //LIFO
-        let current = stackTree.removeLast()
-        stackResult.append(current.value)
-        for child in current.children {
-            stackTree.append(child)
-        }
-    }
-    return stackResult
-}
+
 
 print("Resolved by dfs: \(dfs(tree: numberTrees))")
