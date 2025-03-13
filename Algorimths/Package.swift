@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "Algorimths",
+    name: "Algorithm",
     platforms: [
         .iOS(.v13),
         .macOS(.v11),
@@ -14,17 +14,17 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "Algorimths",
+            name: "Algorithm",
             targets: ["Algorimths"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "Algorimths"),
+            name: "Algorithm"),
         .testTarget(
-            name: "AlgorimthsTests",
-            dependencies: ["Algorimths"]
+            name: "AlgorithmTests",
+            dependencies: ["Algorithm"]
         ),
     ]
 )
